@@ -25,8 +25,7 @@ SECRET_KEY = 'django-insecure-l3wpa-^nh_jr-eq#x5cd&+a1i6zcc640qalos01q2_jm5dod^3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['hd.khaled.hackclub.app']
 
 # Application definition
 
