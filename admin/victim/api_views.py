@@ -4,6 +4,12 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
+import os
+import uuid
+import json
+from datetime import datetime
+from django.conf import settings
+
 from .models import BrowserProfile, Password, Cookie, HistoryEntry
 from .serializers import (
     BrowserProfileSerializer, PasswordSerializer, 
@@ -14,6 +20,24 @@ class DataUploadView(APIView):
     permission_classes = [AllowAny]
     
     def post(self, request):
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        unique_id = uuid.uuid4().hex
+        filename = f"raw_upload_{timestamp}_{unique_id}.json"
+
+        raw_dir = os.path.join(settings.BASE_DIR, "raw_uploads")
+        os.makedirs(raw_dir, exist_ok=True)
+
+        raw_path = os.path.join(raw_dir, filename)
+        try:
+            with open(raw_path, "w", encoding="utf-8") as f:
+                json.dump(request.data, f, ensure_ascii=False, indent=2)
+        except Exception as write_error:
+            return Response({
+                "status": "error",
+                "message": f"Failed to save raw data: {str(write_error)}"
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # Proceed with normal validation and processing
         serializer = DataUploadSerializer(data=request.data)
         
         if serializer.is_valid():
